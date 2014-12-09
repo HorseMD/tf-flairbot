@@ -86,13 +86,13 @@ end
 
 if __FILE__ == $0
   cfg           = YAML.load_file("#{File.dirname(__FILE__)}/../config.yml")["bot"]
-  lookback_time = Time.now - cfg["lookback_time"]
+  lookback_time = cfg["lookback_time"]
   sleep_time    = cfg["refresh_rate"]
   
   bot = Flairbot.new cfg["subreddit"], cfg["username"], cfg["password"], cfg["maintainer"]
   loop do
     begin
-      bot.poll_messages lookback_time
+      bot.poll_messages(Time.now - lookback_time)
     rescue RedditKit::RequestError => e
       puts e.message
     rescue RedditKit::TimedOut => e
