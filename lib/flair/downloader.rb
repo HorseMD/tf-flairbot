@@ -75,14 +75,3 @@ class Downloader
     end
 end
 
-if __FILE__ == $0
-  urls       = "#{File.dirname(__FILE__)}/resources/urls.json"
-  downloader = Downloader.new(urls, nil)
-  downloader.fetch
-  begin
-    downloader.resize(25, 25)
-  rescue => e
-    puts e.message
-  end
-end
-

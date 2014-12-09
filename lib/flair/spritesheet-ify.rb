@@ -67,7 +67,3 @@ class SpritesheetIfy
     end
 end
 
-if __FILE__ == $0
-  SpritesheetIfy.new 25, "#{File.dirname(__FILE__)}/tmp/hat_images"
-end
-

@@ -84,8 +84,3 @@ class WebpageGenerator
     end
 end
 
-if __FILE__ == $0
-  generator = WebpageGenerator.new "Horse-MD"
-  html, css, names = generator.generate_flair_html "#{File.dirname(__FILE__)}/tmp/hat_images"
-  generator.update_flair_website html, css, names, "#{File.dirname(__FILE__)}/resources/website/website_template.html"
-end
