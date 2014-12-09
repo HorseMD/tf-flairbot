@@ -21,10 +21,6 @@ class TinyPNGUpload
     end
   end
 
-  def self.key
-    @@key
-  end
-
   def self.key= k
     @@key = k
   end
