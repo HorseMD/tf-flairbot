@@ -85,7 +85,7 @@ class FlairFail
 end
 
 if __FILE__ == $0
-  cfg           = YAML.load_file("../config.yml")["bot"]
+  cfg           = YAML.load_file("#{File.dirname(__FILE__)}/../config.yml")["bot"]
   lookback_time = Time.now - cfg["lookback_time"]
   sleep_time    = cfg["refresh_rate"]
   
