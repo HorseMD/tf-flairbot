@@ -1,4 +1,4 @@
-#TF2 Flair Generator
+#TF2 Flair Generator / Bot
 
 Downloads all the TF2 cosmetic items and sets them up to be used
 as flair for subreddits.
