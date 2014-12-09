@@ -1,5 +1,5 @@
 %w[RMagick fileutils net/https uri yaml].each { |m| require m }
-require './flair/tinypng_upload.rb'
+require_relative 'tinypng_upload.rb'
 include Magick
 
 # Stitches all the images together into one spritesheet and creates the CSS for them.
