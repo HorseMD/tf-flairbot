@@ -1,0 +1,14 @@
+---
+api:
+  tinypng: YourAPIKeykasdKJ112XEN1IEYX8189126EBX91 # go to tinypng.com, get a free api key (you wont need it often enough to warrant a payed one)
+
+bot:
+  subreddit:     TF2                  # the subreddit the flair is for
+  username:      flairbot_name        # the username of the bot
+  password:      secret               # the password of the bot
+  maintainer:    your_reddit_username # the maintainer (who can shut the bot remotely via a STOP message.)
+  refresh_rate:  120                  # how often the bot should check (seconds) for requests
+  lookback_time: 86400                # how far back in time it should check for them
+
+settings:
+  sprite_size: 25 # how big the flairs should be

@@ -1,0 +1,51 @@
+@font-face {
+    font-family: TF2;
+    src: url(TF2.ttf)
+}
+@font-face {
+    font-family: TF2secondary;
+    src: url(TF2secondary.ttf)
+}
+header {
+    text-align: center;
+}
+header h1 {
+    font-family: TF2;
+}
+header p {
+    margin: 2px;
+    font-family: TF2secondary;
+}
+input {
+    margin: 10px auto;
+    width: 33%;
+    display: block;
+    background-color: #eee;
+    padding: 4px;
+    border: 1px solid #c4c4c4;
+}
+ul {
+    width: 72%;
+    margin: 15px auto;
+    text-align: center;
+    background-color: #eee;
+    padding: 20px;
+    list-style-type: none;
+    border: 1px solid #c4c4c4;
+}
+li {
+    background-image: url("spritesheet.png");
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+    margin: 3px;
+}
+li:hover {
+    background-color: orange;
+    cursor: pointer;
+}
+footer {
+    position: absolute;
+    bottom: 0;
+    left: 20px;
+}

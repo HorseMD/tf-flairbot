@@ -1,0 +1,5 @@
+*~
+config.yml
+generated/out
+generated/tmp
+Gemfile.lock
