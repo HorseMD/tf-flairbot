@@ -20,14 +20,13 @@ You will also need the development headers for ImageMagick, on Linux this is `li
 2. Update the data in `config.yml` with the settings relevant to you (subreddit, bot authentication, etc...).
 3. Run `bundle` inside the root of this directory.
 4. Generate everything at least once (this will make the ./generated/out and ./generated/tmp folders + their data)
-5. Run the Flair bot.
 
 Spritesheet, CSS and website generation:
 ```ruby
 ruby tf2_flair.rb
 ```
 
-6. Do the following:
+After that, do the following:
 
 Place a copy of the contents of `./generated/out/website` wherever you want to host the website (I like
 to use my Dropbox's 'Public' folder).
