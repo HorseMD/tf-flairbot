@@ -19,7 +19,7 @@ You will also need the development headers for ImageMagick, on Linux this is `li
 1. Copy `config_sample.yml` to `config.yml`.
 2. Update the data in `config.yml` with the settings relevant to you (subreddit, bot authentication, etc...).
 3. Run `bundle` inside the root of this directory.
-4. Generate everything at least once (this will make the ./generated/out and ./generated/tmp folders + their data)
+4. Generate everything at least once (this will make the `./generated/out` and `./generated/tmp` folders + their data).
 
 Spritesheet, CSS and website generation:
 ```ruby
@@ -56,13 +56,12 @@ to place a link to wherever you are hosting the flair website.
 
 Finally, you can run the flair bot!
 
-Flairbot:
 ```ruby
 ruby flairbot.rb
 ```
 
 ##TODO
 
-* Logging
-* Bot should validate the flairs its asked for
+* Logging (though arguably one could say it's logs are it's sent and recieved messages on Reddit).
+* Bot should validate the flairs its asked for.
 
