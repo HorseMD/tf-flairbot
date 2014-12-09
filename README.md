@@ -22,7 +22,7 @@ You will also need the development headers for ImageMagick, on Linux this is `li
 4. Generate everything at least once (this will make the `./generated/out` and `./generated/tmp` folders + their data).
 
 Spritesheet, CSS and website generation:
-```ruby
+```shell
 ruby tf2_flair.rb
 ```
 
@@ -56,7 +56,7 @@ to place a link to wherever you are hosting the flair website.
 
 Finally, you can run the flair bot!
 
-```ruby
+```shell
 ruby flairbot.rb
 ```
 
