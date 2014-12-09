@@ -63,5 +63,5 @@ ruby flairbot.rb
 ##TODO
 
 * Logging (though arguably one could say it's logs are it's sent and recieved messages on Reddit).
-* Bot should validate the flairs its asked for.
+* Minify the CSS ourself.
 
