@@ -1,4 +1,4 @@
-%w[fileutils nokogiri open-uri json RMagick].each { |mod| require mod }
+%w[fileutils nokogiri open-uri yaml RMagick].each { |mod| require mod }
 include Magick
 
 # Downloads all the TF2 cosmetics from the Team Fortress 2 Wiki.
@@ -8,8 +8,8 @@ class Downloader
   attr_accessor :urls
 
   def initialize url_location, image_dir
-    @urls      = JSON.parse(IO.read(url_location))
-    @image_dir = image_dir# || "#{File.dirname(__FILE__)}/tmp/hat_images" #where to save the images
+    @urls      = YAML.load_file(url_location)
+    @image_dir = image_dir
 
     FileUtils.mkdir_p(@image_dir) unless File.directory? @image_dir
   end

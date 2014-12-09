@@ -3,7 +3,7 @@
 class TF2Flair
   def initialize
     gen_dir = "#{File.dirname(__FILE__)}/../generated"    
-    urls    = "#{gen_dir}/resources/urls.json"
+    urls    = "#{gen_dir}/resources/urls.yml"
     
     cfg = YAML.load_file("#{File.dirname(__FILE__)}/../config.yml")
     sprite_size = cfg["settings"]["sprite_size"]
