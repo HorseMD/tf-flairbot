@@ -18,10 +18,10 @@ class Flairbot
   # If the message subject is "flair", then we're updating a flair.
   # Otherwise if its subject is "stop", and the user is the maintainer of this bot,
   # then we will stop the bot.
-  def poll_messages valid_flairs, until_time=Time.now-172800 #172800 == 2 days
-    latest_messages = @client.messages.results.delete_if { |m| m.created_at < until_time }
+  def poll_messages valid_flairs
+    latest_messages = @client.messages({:category => :unread})
     latest_messages.each do |message|
-      if message.is_a? RedditKit::PrivateMessage and message.unread?
+      if message.is_a? RedditKit::PrivateMessage
         @client.mark_as_read message
 
         if message.subject.downcase.eql? "flair"
@@ -92,7 +92,6 @@ end
 
 if __FILE__ == $0
   cfg           = YAML.load_file("#{File.dirname(__FILE__)}/../config.yml")["bot"]
-  lookback_time = cfg["lookback_time"]
   sleep_time    = cfg["refresh_rate"]
   begin
     valid_flairs = JSON.parse(
@@ -105,7 +104,7 @@ if __FILE__ == $0
   bot = Flairbot.new cfg["subreddit"], cfg["username"], cfg["password"], cfg["maintainer"]
   loop do
     begin
-      bot.poll_messages(valid_flairs, Time.now - lookback_time)
+      bot.poll_messages valid_flairs
     rescue RedditKit::RequestError => e
       puts e.message
     rescue RedditKit::TimedOut => e

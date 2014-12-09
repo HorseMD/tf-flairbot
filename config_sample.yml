@@ -8,7 +8,6 @@ bot:
   password:      secret               # the password of the bot
   maintainer:    your_reddit_username # the maintainer (who can shut the bot remotely via a STOP message.)
   refresh_rate:  120                  # how often the bot should check (seconds) for requests
-  lookback_time: 86400                # how far back in time it should check for them
 
 settings:
   sprite_size: 25 # how big the flairs should be
