@@ -1,5 +1,4 @@
-require 'fileutils'
-require 'json'
+%w[fileutils json].each { |m| require m }
 
 class WebpageGenerator
   attr_accessor :username
@@ -40,19 +39,18 @@ class WebpageGenerator
     contents = File.read("#{input}/website_template.html")
     contents.sub!("%FLAIRS%", html)
 
-    dir = @output_dir #"#{File.dirname(__FILE__)}/out/website"
-    create_unless_exist dir
-    create_unless_exist "#{dir}/style"
-    create_unless_exist "#{dir}/js"
+    create_unless_exist @output_dir
+    create_unless_exist "#{@output_dir}/style"
+    create_unless_exist "#{@output_dir}/js"
 
-    File.write("#{dir}/index.html", contents)
-    File.write("#{dir}/style/flairstyle.css", css)
-    File.write("#{dir}/js/names.js", "names = " + names.to_json)
-    File.write("#{dir}/js/flairedirect.js", get_message_js)
-    File.write("#{dir}/js/search.js", get_search_js)
+    File.write("#{@output_dir}/index.html", contents)
+    File.write("#{@output_dir}/style/flairstyle.css", css)
+    File.write("#{@output_dir}/js/names.js", "names = " + names.to_json)
+    File.write("#{@output_dir}/js/flairedirect.js", get_message_js)
+    File.write("#{@output_dir}/js/search.js", get_search_js)
 
-    FileUtils.cp(spritesheet, "#{dir}/style")
-    FileUtils.cp_r("#{input}/style/.", "#{dir}/style")
+    FileUtils.cp(spritesheet, "#{@output_dir}/style")
+    FileUtils.cp_r("#{input}/style/.", "#{@output_dir}/style")
   end
 
   private
