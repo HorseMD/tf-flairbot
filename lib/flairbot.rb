@@ -1,4 +1,4 @@
-%w[redditkit yaml].each { |m| require m }
+%w[redditkit yaml json].each { |m| require m }
 
 class Flairbot
   attr_accessor :client
@@ -18,18 +18,19 @@ class Flairbot
   # If the message subject is "flair", then we're updating a flair.
   # Otherwise if its subject is "stop", and the user is the maintainer of this bot,
   # then we will stop the bot.
-  def poll_messages until_time=Time.now-172800 #172800 == 2 days
+  def poll_messages valid_flairs, until_time=Time.now-172800 #172800 == 2 days
     latest_messages = @client.messages.results.delete_if { |m| m.created_at < until_time }
     latest_messages.each do |message|
-      if message.is_a? RedditKit::PrivateMessage and message.unread? and
+      if message.is_a? RedditKit::PrivateMessage and message.unread?
+        @client.mark_as_read message
+
         if message.subject.downcase.eql? "flair"
-          result = update_flair(message.author, message.body)
+          result = update_flair(message.author, message.body, valid_flairs)
 
           if result.is_a? FlairFail
             @client.send_message(get_error_message(message.author, result), message.author, :subject => "There was an error with setting your flair.")
             puts "Error: #{result.message}"
           else
-            @client.mark_as_read message
             @client.send_message(get_message(message.author, message.body), message.author, :subject => "Flair updated.")
             puts "Success! Flair for #{message.author} set to #{message.body}."
           end
@@ -37,6 +38,9 @@ class Flairbot
           puts "Received stop message from #{message.author}."
           sign_out
           exit
+        else
+          @client.send_message(get_unexpected_message(message.author), message.author, :subject => "re: #{message.subject}")
+          puts "Recieved unexpected message: #{message.body} from #{message.author}."
         end
       end
     end
@@ -62,37 +66,46 @@ class Flairbot
         " If the problem persists, please contact a moderator and copy this message to them."
     end
 
+    # When the bot gets a message it's not expecting, let the sender of the message know that this is
+    # actually a robot and that they should contact the maintainer.
+    def get_unexpected_message author
+      "Hello #{author},\n\nJust so you know, I am a robot and have no idea what your message means. If you have any queries, "\
+      "please contact my maintainer, [#{@maintainer}](http://reddit.com/u/#{maintainer})."
+    end
+
     # Sets the given user's flair to the given flair, by classname.
-    def update_flair user, flair
+    def update_flair user, flair, valid_flairs
+      return FlairFail.new "#{flair} is not an existing flair" unless valid_flairs.include? flair
+
       begin
         @client.set_flair({ :subreddit => @subreddit, :css_class => flair, :user => user })
-      rescue RedditKit::TooManyClassNames => toomany
-        FlairFail.new toomany, "There are too many flairs!"
+      rescue RedditKit::TooManyClassNames
+        FlairFail.new "There are too many flairs!"
       rescue Exception => e
-        FlairFail.new e, e.message
+        FlairFail.new e.message
       end
     end
 end
 
-class FlairFail
-  attr_accessor :type
-  attr_accessor :message
-
-  def initialize type, message
-    @type = type
-    @message = message
-  end
+class FlairFail < StandardError
 end
 
 if __FILE__ == $0
   cfg           = YAML.load_file("#{File.dirname(__FILE__)}/../config.yml")["bot"]
   lookback_time = cfg["lookback_time"]
   sleep_time    = cfg["refresh_rate"]
-  
+  begin
+    valid_flairs = JSON.parse(
+      File.read("#{File.dirname(__FILE__)}/../generated/out/website/js/names.js").sub('names = ', '')
+    ).values
+  rescue Exception => e
+    puts "Failed to load valid flairs: #{e.message}"
+  end
+
   bot = Flairbot.new cfg["subreddit"], cfg["username"], cfg["password"], cfg["maintainer"]
   loop do
     begin
-      bot.poll_messages(Time.now - lookback_time)
+      bot.poll_messages(valid_flairs, Time.now - lookback_time)
     rescue RedditKit::RequestError => e
       puts e.message
     rescue RedditKit::TimedOut => e
