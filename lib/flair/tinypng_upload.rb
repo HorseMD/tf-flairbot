@@ -17,7 +17,7 @@ class TinyPNGUpload
     if response.code == "201"
       File.binwrite(output, http.get(response["location"]).body)
     else
-      puts "Compression failed"
+      puts "Compression failed (error #{response.code})."
     end
   end
 

@@ -8,6 +8,10 @@ class CSSMinifier
     uri      = URI.parse('http://cssminifier.com/raw')
     response = Net::HTTP.post_form(uri, {"input" => IO.read(input)})
 
-    File.open(input, 'w') { |file| file.write(response.body) }
+    if response.code == "200"
+      File.open(input, 'w') { |file| file.write(response.body) }
+    else
+      puts "CSS minification failed (error #{response.code})."
+    end
   end
 end
