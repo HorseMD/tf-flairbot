@@ -60,6 +60,25 @@ Finally, you can run the flair bot!
 ruby flairbot.rb
 ```
 
+##Configuration
+
+You can customise most aspects of the bot and flair/website generation via `config.yml` in the root
+of this project.
+
+You can customise the messages the bot replies with by editing the files within `./generated/resources/bot`.
+The contents of these files should be [Reddit-compatible](https://www.reddit.com/comments/6ewgt/reddit_markdown_primer_or_how_do_you_do_all_that)
+markdown. The flair bot will search and replace variables within these files.
+
+###Variables
+
+* %MAINTAINER% - the person (set in `config.yml` who is maintaining the bot).
+* %AUTHOR%     - the person who sent a message to the bot.
+* %INFO%       - misc info that changes based on the response-type. For `success.md`, this will be the name of the flair. For `failure.md`
+this is the error message.
+* %SUBREDDIT%  - the subreddit this bot is managing.
+* %SUBJECT%    - the subject of the message sent to the bot.
+* %BODY%       - the body of the message sent to the bot.
+
 ##TODO
 
 * Logging (though arguably one could say it's logs are it's sent and recieved messages on Reddit).
