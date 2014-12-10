@@ -30,8 +30,9 @@ After that, do the following:
 
 1. Place a copy of the contents of `./generated/out/website` wherever you want to host the website (I like
 to use my Dropbox's 'Public' folder).
-2. You should then copy the contents of `./generated/out/spritesheet/spritesheet.css` into your subreddit's stylesheet.
-3. After that, you'll want to prepend the CSS with something like this:
+2. Upload `./generated/out/spritesheet/spritesheet.png` to your subreddit's images.
+3. You should then copy the contents of `./generated/out/spritesheet/spritesheet.css` into your subreddit's stylesheet.
+4. After that, you'll want to prepend the CSS with something like this:
 
 ```css
 .flair {
@@ -46,8 +47,7 @@ to use my Dropbox's 'Public' folder).
 }
 ```
 
-You'll also need to upload `spritesheet.png` into your subreddit's images. You'll also probably want
-to place a link to wherever you are hosting the flair website.
+You'll also probably want to place a link on your subreddit to wherever you are hosting the flair website.
 
 Finally, you can run the flair bot!
 
