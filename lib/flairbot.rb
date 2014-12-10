@@ -107,8 +107,8 @@ class FlairFail < StandardError
 end
 
 if __FILE__ == $0
-  cfg           = YAML.load_file("#{File.dirname(__FILE__)}/../config.yml")["bot"]
-  sleep_time    = cfg["refresh_rate"]
+  cfg        = YAML.load_file("#{File.dirname(__FILE__)}/../config.yml")["bot"]
+  sleep_time = cfg["refresh_rate"]
   begin
     valid_flairs = JSON.parse(
       File.read("#{File.dirname(__FILE__)}/../generated/out/website/js/names.js").sub('names = ', '')

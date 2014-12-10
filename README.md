@@ -71,13 +71,13 @@ markdown. The flair bot will search and replace variables within these files.
 
 ###Variables
 
-* %MAINTAINER% - the person (set in `config.yml` who is maintaining the bot).
 * %AUTHOR%     - the person who sent a message to the bot.
-* %INFO%       - misc info that changes based on the response-type. For `success.md`, this will be the name of the flair. For `failure.md`
-this is the error message.
-* %SUBREDDIT%  - the subreddit this bot is managing.
-* %SUBJECT%    - the subject of the message sent to the bot.
 * %BODY%       - the body of the message sent to the bot.
+* %MAINTAINER% - the person (set in `config.yml`, the person who is maintaining the bot).
+* %SUBJECT%    - the subject of the message sent to the bot.
+* %SUBREDDIT%  - the subreddit this bot is managing.
+* %INFO%       - misc info that changes based on the response-type. E.g. for `success.md`, this will be the name of the flair. For `failure.md`,
+this is the error message.
 
 ##TODO
 
