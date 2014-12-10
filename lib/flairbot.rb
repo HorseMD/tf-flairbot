@@ -5,11 +5,17 @@ class Flairbot
   attr_accessor :subreddit
   attr_accessor :maintainer
 
+  @@resources = ""
+  @@responses = {}
+
   def initialize sub, username, password, maintainer
     @client            = RedditKit::Client.new username, password
     @client.user_agent = "TF2 Flairbot v1.0"
     @subreddit         = sub
     @maintainer        = maintainer
+
+    preload_responses
+
     throw ArgumentError, "Invalid credentials"  unless @client.signed_in?
     throw ArgumentError, "Bot isnt a moderator" unless @client.subreddit(@subreddit).user_is_moderator?
   end
@@ -21,64 +27,54 @@ class Flairbot
   def poll_messages valid_flairs
     unread_messages = @client.messages({:category => :unread})
     unread_messages.each do |message|
-      parse_message(message) if message.is_a? RedditKit::PrivateMessage
+      parse_message(message, valid_flairs) if message.is_a? RedditKit::PrivateMessage
     end
   end
 
   # Parse a single message for flair updating etc...
-  def parse_message message
-    @client.mark_as_read message
+  # Once it's parsed, the message is marked as having been read.
+  def parse_message message, valid_flairs
+    data = {:subject => message.subject, :body => message.body, :author => message.author}
 
     if message.subject.downcase.eql? "flair"
       result = update_flair(message.author, message.body, valid_flairs)
 
       if result.is_a? FlairFail
-        @client.send_message(get_error_message(message.author, result), message.author, :subject => "There was an error with setting your flair.")
-        puts "Error: #{result.message}"
+        reply = load_response("failure", data.merge(:info => result.message))
+        @client.send_message(reply, message.author, :subject => "There was an error with setting your flair.")
       else
-        @client.send_message(get_message(message.author, message.body), message.author, :subject => "Flair updated.")
-        puts "Success! Flair for #{message.author} set to #{message.body}."
+        reply = load_response("success", data.merge(:info => message.body))
+        @client.send_message(reply, message.author, :subject => "Flair updated.")
       end
     elsif message.subject.downcase.eql? "stop" and message.author == @maintainer
-      puts "Received stop message from #{message.author}."
-      sign_out
+      @client.sign_out
       exit
     else
-      @client.send_message(get_unexpected_message(message.author), message.author, :subject => "re: #{message.subject}")
-      puts "Recieved unexpected message: #{message.body} from #{message.author}."
+      @client.send_message(load_response("unexpected", data), message.author, :subject => "re: #{message.subject}")
     end
+
+    @client.mark_as_read message
   end
 
-  # Sign out from Reddit.
-  def sign_out
-    @client.sign_out
+  def self.resources= path
+    @@resources = path
   end
 
   private
-  # Get the pretty success message for the given author.
-  def get_message author, flair
-    "Hello #{author},\n\nI just wanted to let you know that I have completed your request to use the flair \"#{flair}\", "\
-    "and your flair should now be updated.\n\nYou may need to refresh your browser cache before you see any changes: "\
-    "This is usually done by pressing the Shift key while refreshing."
-  end
+  # Read each of the bot's resources into @@resources so we don't need to read from file
+  # more than once.
+  def preload_responses
+    raise "Resource path for Flairbot hasn't been set. Please set it via Flairbot.reponses = <path>." unless not @@resources.nil?
 
-  # Get the pretty error message for the given author, with the given error.
-  def get_error_message author, error
-    "Hello #{author},\n\nUnfortunately there was an error when processing your flair request:\n"\
-    " >#{error.message}.\n\nPlease wait a little while, and try again later."\
-    " If the problem persists, please contact a moderator and copy this message to them."
-  end
-
-  # When the bot gets a message it's not expecting, let the sender of the message know that this is
-  # actually a robot and that they should contact the maintainer.
-  def get_unexpected_message author
-    "Hello #{author},\n\nJust so you know, I am a robot and have no idea what your message means. If you have any queries, "\
-    "please contact my maintainer, [#{@maintainer}](http://reddit.com/u/#{maintainer})."
+    Dir.foreach(@@resources) do |file|
+      next if file.start_with? '.' or file.end_with? "~"
+      @@responses[File.basename(file, File.extname(file))] = IO.read(@@resources + file)
+    end
   end
 
   # Sets the given user's flair to the given flair, by classname.
   def update_flair user, flair, valid_flairs
-    return FlairFail.new "#{flair} is not an existing flair" unless valid_flairs.include? flair
+    return FlairFail.new "\"#{flair}\" is not an existing flair." unless valid_flairs.include? flair
 
     begin
       @client.set_flair({ :subreddit => @subreddit, :css_class => flair, :user => user })
@@ -88,12 +84,29 @@ class Flairbot
       FlairFail.new e.message
     end
   end
+
+  # Generate the response message this bot will send.
+  # response - the name of the response e.g. "success"
+  # opts - Hash containing keys to be replaced with values.
+  def load_response response, opts={}
+    opts.merge!({
+                  :maintainer => @maintainer,
+                  :subreddit  => @subreddit
+    })
+    txt = @@responses[response]
+    opts.each do |key, val|
+      txt.gsub!("%#{key.upcase}%", val)
+    end
+    return txt
+  end
 end
 
 class FlairFail < StandardError
 end
 
 if __FILE__ == $0
+  Flairbot.resources = "#{File.dirname(__FILE__)}/../generated/resources/bot/"
+
   cfg           = YAML.load_file("#{File.dirname(__FILE__)}/../config.yml")["bot"]
   sleep_time    = cfg["refresh_rate"]
   begin
