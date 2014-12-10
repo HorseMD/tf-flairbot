@@ -28,15 +28,10 @@ ruby tf2_flair.rb
 
 After that, do the following:
 
-Place a copy of the contents of `./generated/out/website` wherever you want to host the website (I like
+1. Place a copy of the contents of `./generated/out/website` wherever you want to host the website (I like
 to use my Dropbox's 'Public' folder).
-
-You'll then need to minify the CSS in `./generated/out/spritesheet.css` (as Reddit limits how big this can be) and
-add it to your subreddit's CSS. Note: because there are *so many hats* (about a thousand) you may have issues with your
-subreddit's CSS being too large. In this case, try minifying the entire stylesheet for your subreddit. If this fails,
-bug me and I'll make a fix.
-
-You'll also want to prepend the hat CSS with something like this:
+2. You should then copy the contents of `./generated/out/spritesheet/spritesheet.css` into your subreddit's stylesheet.
+3. After that, you'll want to prepend the CSS with something like this:
 
 ```css
 .flair {
@@ -82,5 +77,4 @@ this is the error message.
 ##TODO
 
 * Logging (though arguably one could say it's logs are it's sent and recieved messages on Reddit).
-* Minify the CSS ourself.
 

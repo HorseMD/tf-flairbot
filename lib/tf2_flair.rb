@@ -1,4 +1,4 @@
-%w[downloader spritesheet-ify webpage_generator].each { |rel| require_relative "flair/#{rel}" }
+%w[downloader spritesheet-ify webpage_generator css_minifier].each { |rel| require_relative "flair/#{rel}" }
 
 class TF2Flair
   def initialize
@@ -16,6 +16,8 @@ class TF2Flair
     puts "Stitching images and creating spritesheet with CSS"
     spriter = SpritesheetIfy.new sprite_size, "#{gen_dir}/tmp/hat_images", "#{gen_dir}/out/spritesheet"
     spriter.compress cfg["api"]["tinypng"], "#{gen_dir}/out/spritesheet"
+
+    CSSMinifier.minify "#{gen_dir}/out/spritesheet/spritesheet.css"
 
     puts "Generating website"
     generator = WebpageGenerator.new cfg["bot"]["username"], "#{gen_dir}/out/website"
