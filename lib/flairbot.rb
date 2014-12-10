@@ -5,7 +5,7 @@ class Flairbot
   attr_accessor :subreddit
   attr_accessor :maintainer
 
-  @@resources = ""
+  @@resources = "#{File.dirname(__FILE__)}/../generated/resources/bot/"
   @@responses = {}
 
   def initialize sub, username, password, maintainer
@@ -34,7 +34,13 @@ class Flairbot
   # Parse a single message for flair updating etc...
   # Once it's parsed, the message is marked as having been read.
   def parse_message message, valid_flairs
-    data = {:subject => message.subject, :body => message.body, :author => message.author}
+    data = {
+      :subject    => message.subject,
+      :body       => message.body,
+      :author     => message.author,
+      :maintainer => @maintainer,
+      :subreddit  => @subreddit
+    }
 
     if message.subject.downcase.eql? "flair"
       result = update_flair(message.author, message.body, valid_flairs)
@@ -89,10 +95,6 @@ class Flairbot
   # response - the name of the response e.g. "success"
   # opts - Hash containing keys to be replaced with values.
   def load_response response, opts={}
-    opts.merge!({
-                  :maintainer => @maintainer,
-                  :subreddit  => @subreddit
-    })
     txt = @@responses[response]
     opts.each do |key, val|
       txt.gsub!("%#{key.upcase}%", val)
@@ -105,8 +107,6 @@ class FlairFail < StandardError
 end
 
 if __FILE__ == $0
-  Flairbot.resources = "#{File.dirname(__FILE__)}/../generated/resources/bot/"
-
   cfg           = YAML.load_file("#{File.dirname(__FILE__)}/../config.yml")["bot"]
   sleep_time    = cfg["refresh_rate"]
   begin
