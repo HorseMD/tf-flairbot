@@ -21,7 +21,7 @@ class TF2Flair
 
     puts "Generating website"
     generator = WebpageGenerator.new cfg["bot"]["username"], "#{gen_dir}/out/website"
-    html, css, names = generator.generate_flair_html "#{gen_dir}/tmp/hat_images"
+    html, css, names = generator.generate_flair_html "#{gen_dir}/tmp/hat_images", sprite_size
     generator.update_flair_website(
       html, css, names,
       "#{gen_dir}/resources/website",

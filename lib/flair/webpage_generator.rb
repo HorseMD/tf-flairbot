@@ -10,7 +10,7 @@ class WebpageGenerator
   end
 
   # Generate the html, css and javascript for the website.
-  def generate_flair_html imagedir
+  def generate_flair_html imagedir, img_size=25
     images = Dir.entries(imagedir)
     images.delete_if { |item| not item.include? ".png" }
     images.sort!
@@ -19,6 +19,7 @@ class WebpageGenerator
     css   = []
     names = {}
     html << "<ul class=\"flairlist\">"
+    css << ".flairlist li{width:#{img_size}px;height:#{img_size}px}\n"
 
     images.each_with_index do |item, count|
       sanitized_name = item.sub('.png', '')
@@ -26,7 +27,7 @@ class WebpageGenerator
       names["#{count}"] = sanitized_name
 
       html << "<li id=\"#{count}\" class=\"flair-#{count}\"></li>"
-      css  << ".flair-#{count}{background-position:0 -#{count * 25}px}"
+      css  << ".flair-#{count}{background-position:0 -#{count * img_size}px}"
     end
 
     html << "</ul>"

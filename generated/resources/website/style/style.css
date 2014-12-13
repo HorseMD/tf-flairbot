@@ -35,8 +35,6 @@ ul {
 }
 li {
     background-image: url("spritesheet.png");
-    width: 25px;
-    height: 25px;
     display: inline-block;
     margin: 3px;
 }
