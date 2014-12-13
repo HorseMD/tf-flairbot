@@ -4,7 +4,7 @@ class WebpageGenerator
   attr_accessor :username
   attr_accessor :output_dir
 
-  def initialize username, out    
+  def initialize username, out
     @name = username
     @output_dir = out
   end
@@ -47,9 +47,9 @@ class WebpageGenerator
     File.write("#{@output_dir}/style/flairstyle.css", css)
     File.write("#{@output_dir}/js/names.js", "names = " + names.to_json)
     File.write("#{@output_dir}/js/flairedirect.js", get_message_js)
-    File.write("#{@output_dir}/js/search.js", get_search_js)
 
     FileUtils.cp(spritesheet, "#{@output_dir}/style")
+    FileUtils.cp_r("#{input}/js/.", "#{@output_dir}/js/")
     FileUtils.cp_r("#{input}/style/.", "#{@output_dir}/style")
   end
 
@@ -66,19 +66,4 @@ class WebpageGenerator
     }
 });"
     end
-
-    def get_search_js
-"function updateFlairList(txtbox) {
-    var count = Object.keys(names).length;
-    for(var i=0; i<count; i++) {
-        if(names[i].toLowerCase().indexOf(txtbox.value.toLowerCase().replace(/\s/g, '')) <= -1) {
-            document.getElementById(i).style.display = \"none\";
-        }
-        else {
-            document.getElementById(i).style.display = \"inline-block\";
-        }
-    }
-}"
-    end
 end
-

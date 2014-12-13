@@ -26,7 +26,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <link rel="stylesheet" href="./style/style.css">
     <link rel="stylesheet" href="./style/flairstyle.css">
     <script src="./js/names.js"></script>
-    <script src="./js/search.js"></script>
     <script src="./js/flairedirect.js"></script>
 </head>
 <body>
@@ -35,9 +34,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <p>To use this, click the flair you want to use. Once redirected to Reddit, send the message without altering its contents.</p>
         <p>This sends a flair change request to the flair bot.</p>
     </header>
-    <input id="search" oninput="updateFlairList(this);" type="search" placeholder="Search...">
+    <input id="search" type="search" placeholder="Search...">
 <div id="flairs">
     %FLAIRS%
 </div>
+<script src="./js/search.js"></script>
 </body>
 </html>
