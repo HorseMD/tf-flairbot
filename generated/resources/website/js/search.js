@@ -15,7 +15,7 @@ function onFlairHover(flair, event) {
     var tt = document.getElementById("tooltip");
     tt.innerHTML = names[flair.id];
 
-    var targetX = event.clientX - tt.clientWidth / 2;
+    var targetX = event.clientX + window.pageXOffset - tt.clientWidth / 2;
     var targetY = event.clientY + window.pageYOffset + 5;
 
     tt.style.display = "inline-block";
