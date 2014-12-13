@@ -59,8 +59,8 @@ class WebpageGenerator
     end
 
     def get_message_js
-"var link = \"http://reddit.com/message/compose/?to=#{@name}&amp;subject=flair&amp;message=\"
-    document.addEventListener('click', function(e) {
+"var link = \"http://reddit.com/message/compose/?to=#{@name}&amp;subject=flair&amp;message=\";
+document.addEventListener(\"click\", function(e) {
     if (e.target.className.indexOf(\"flair-\") > -1 && e.target.id != \"undefined\") {
         window.open(link + names[e.target.id])
     }
