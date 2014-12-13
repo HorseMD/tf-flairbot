@@ -26,6 +26,7 @@ class Flairbot
   # then we will stop the bot.
   def poll_messages valid_flairs
     unread_messages = @client.messages({:category => :unread})
+    puts "Polling messages..."
     unread_messages.each do |message|
       parse_message(message, valid_flairs) if message.is_a? RedditKit::PrivateMessage
     end
@@ -41,6 +42,7 @@ class Flairbot
       :maintainer => @maintainer,
       :subreddit  => @subreddit
     }
+    puts "Parsing #{message.body} from #{message.author}"
 
     if message.subject.downcase.eql? "flair"
       result = update_flair(message.author, message.body, valid_flairs)
@@ -97,7 +99,7 @@ class Flairbot
   def load_response response, opts={}
     txt = @@responses[response]
     opts.each do |key, val|
-      txt.gsub!("%#{key.upcase}%", val)
+      txt = txt.gsub("%#{key.upcase}%", val)
     end
     return txt
   end
