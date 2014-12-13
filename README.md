@@ -41,8 +41,8 @@ to use my Dropbox's 'Public' folder).
     padding: 0px;
     background: url(%%spritesheet%%);
     display: inline-block;
-    width: 25px;
-    height: 25px;
+    width: 28px;     /* If you change the flair size in config.yml, make sure you update this. */
+    height: 28px;    /* This one too! They should have the same value. */
     vertical-align: middle;
 }
 ```
