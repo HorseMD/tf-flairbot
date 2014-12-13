@@ -26,7 +26,7 @@ class WebpageGenerator
       names["#{count}"] = sanitized_name
 
       html << "<li id=\"#{count}\" class=\"flair-#{count}\"></li>"
-      css  << ".flair-#{count} {background-position: 0 -#{count * 25}px;}"
+      css  << ".flair-#{count}{background-position:0 -#{count * 25}px}"
     end
 
     html << "</ul>"
