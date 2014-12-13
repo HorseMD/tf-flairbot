@@ -10,4 +10,4 @@ bot:
   refresh_rate:  120                  # how often the bot should check (seconds) for requests
 
 settings:
-  sprite_size: 25 # how big the flairs should be
+  sprite_size: 28 # how big the flairs should be
