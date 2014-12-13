@@ -32,7 +32,8 @@ After that, do the following:
 to use my Dropbox's 'Public' folder).
 2. Upload `./generated/out/spritesheet/spritesheet.png` to your subreddit's images.
 3. You should then copy the contents of `./generated/out/spritesheet/spritesheet.css` into your subreddit's stylesheet.
-4. After that, you'll want to prepend the CSS with something like this:
+4. After that, you'll want to prepend the CSS with something like this (don't forget to update the width and height if you
+changed them in `config.yml`.):
 
 ```css
 .flair {
@@ -41,8 +42,8 @@ to use my Dropbox's 'Public' folder).
     padding: 0px;
     background: url(%%spritesheet%%);
     display: inline-block;
-    width: 28px;     /* If you change the flair size in config.yml, make sure you update this. */
-    height: 28px;    /* This one too! They should have the same value. */
+    width: 28px;
+    height: 28px;
     vertical-align: middle;
 }
 ```
